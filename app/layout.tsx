@@ -4,6 +4,12 @@ import { PlasmicRootProvider } from '@plasmicapp/loader-nextjs';
 import { PLASMIC } from '@/lib/plasmic-init';
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { EnvErrorBoundary } from './components/EnvErrorBoundary';
+
+// Validate environment variables on app startup
+// This will throw an error if any required variables are missing
+// The EnvErrorBoundary will catch and display these errors gracefully
+import '@/lib/env';
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,9 +31,11 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <PlasmicRootProvider loader={PLASMIC}>
-          {children}
-        </PlasmicRootProvider>
+        <EnvErrorBoundary>
+          <PlasmicRootProvider loader={PLASMIC}>
+            {children}
+          </PlasmicRootProvider>
+        </EnvErrorBoundary>
       </body>
     </html>
   );
