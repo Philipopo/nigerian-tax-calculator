@@ -1,23 +1,9 @@
-'use client';
-
 import * as React from 'react';
 import { PlasmicComponent } from '@plasmicapp/loader-nextjs';
 import { PLASMIC } from '@/lib/plasmic-init';
 
-export default function HomePage() {
-  const [plasmicData, setPlasmicData] = React.useState<any>(null);
-  const [loading, setLoading] = React.useState(true);
-
-  React.useEffect(() => {
-    PLASMIC.maybeFetchComponentData('Homepage').then((data) => {
-      setPlasmicData(data);
-      setLoading(false);
-    });
-  }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+export default async function HomePage() {
+  const plasmicData = await PLASMIC.maybeFetchComponentData('Homepage');
 
   if (!plasmicData) {
     return (
